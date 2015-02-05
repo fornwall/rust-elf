@@ -635,29 +635,82 @@
 <span id="593">593</span>
 <span id="594">594</span>
 <span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
 </pre><pre class='rust '>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>default</span>;
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Values and locations for parsing elf header ident byte array</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Length of ELF file header platform-independent identification fields</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_NIDENT</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>16</span>;
-<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFMAGIC</span>: [<span class='ident'>u8</span>;<span class='number'>4</span>] <span class='op'>=</span> [<span class='number'>0x7f</span>, <span class='number'>0x45</span>, <span class='number'>0x4c</span>, <span class='number'>0x46</span>];
+<span class='doccomment'>/// ELF magic number byte 1</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFMAG0</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0x7f</span>;
+<span class='doccomment'>/// ELF magic number byte 2</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFMAG1</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0x45</span>;
+<span class='doccomment'>/// ELF magic number byte 3</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFMAG2</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0x4c</span>;
+<span class='doccomment'>/// ELF magic number byte 4</span>
+<span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFMAG3</span>: <span class='ident'>u8</span> <span class='op'>=</span> <span class='number'>0x46</span>;
+<span class='doccomment'>/// Location of ELF class field in ELF file header ident array</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_CLASS</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>4</span>;
+<span class='doccomment'>/// Location of data format field in ELF file header ident array</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_DATA</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>5</span>;
+<span class='doccomment'>/// Location of ELF version field in ELF file header ident array</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_VERSION</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>6</span>;
+<span class='doccomment'>/// Location of OS ABI field in ELF file header ident array</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_OSABI</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>7</span>;
+<span class='doccomment'>/// Location of ABI version field in ELF file header ident array</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EI_ABIVERSION</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='number'>8</span>;
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for Class</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents the ELF file class (32-bit vs 64-bit)</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Class</span>(<span class='kw'>pub</span> <span class='ident'>u8</span>);
+<span class='doccomment'>/// Invalid ELF file class</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFCLASSNONE</span> : <span class='ident'>Class</span> <span class='op'>=</span> <span class='ident'>Class</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// 32-bit ELF file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFCLASS32</span> : <span class='ident'>Class</span> <span class='op'>=</span> <span class='ident'>Class</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// 64-bit ELF file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFCLASS64</span> : <span class='ident'>Class</span> <span class='op'>=</span> <span class='ident'>Class</span>(<span class='number'>2</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>Class</span> {
@@ -678,13 +731,14 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for Data</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents the ELF file data format (little-endian vs big-endian)</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Data</span>(<span class='kw'>pub</span> <span class='ident'>u8</span>);
+<span class='doccomment'>/// Invalid ELF data format</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFDATANONE</span> : <span class='ident'>Data</span> <span class='op'>=</span> <span class='ident'>Data</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// little-endian ELF file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFDATA2LSB</span> : <span class='ident'>Data</span> <span class='op'>=</span> <span class='ident'>Data</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// big-endian ELF file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFDATA2MSB</span> : <span class='ident'>Data</span> <span class='op'>=</span> <span class='ident'>Data</span>(<span class='number'>2</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>Data</span> {
@@ -705,14 +759,14 @@
     }
 }
 
+<span class='doccomment'>/// Represents the ELF file version</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for Version</span>
-<span class='doccomment'>/// This field represents the values both found in the e_ident byte array</span>
-<span class='doccomment'>/// and the e_version field.</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// This field represents the values both found in the e_ident byte array and the e_version field.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Version</span>(<span class='kw'>pub</span> <span class='ident'>u32</span>);
+<span class='doccomment'>/// Invalid version</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EV_NONE</span> : <span class='ident'>Version</span> <span class='op'>=</span> <span class='ident'>Version</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Current version</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EV_CURRENT</span> : <span class='ident'>Version</span> <span class='op'>=</span> <span class='ident'>Version</span>(<span class='number'>1</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>Version</span> {
@@ -732,22 +786,32 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for OSABI</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents the ELF file OS ABI</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>OSABI</span>(<span class='kw'>pub</span> <span class='ident'>u8</span>);
+<span class='doccomment'>/// Defaults to Unix System V</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_NONE</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Unix System V</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_SYSV</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// HP-UX</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_HPUX</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// NetBSD</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_NETBSD</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Linux with GNU extensions</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_LINUX</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>3</span>);
+<span class='doccomment'>/// Solaris</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_SOLARIS</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>6</span>);
+<span class='doccomment'>/// AIX</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_AIX</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>7</span>);
+<span class='doccomment'>/// SGI Irix</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_IRIX</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>8</span>);
+<span class='doccomment'>/// FreeBSD</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_FREEBSD</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>9</span>);
+<span class='doccomment'>/// Compaq TRU64 UNIX</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_TRU64</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>10</span>);
+<span class='doccomment'>/// Novell Modesto</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_MODESTO</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>11</span>);
+<span class='doccomment'>/// OpenBSD</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ELFOSABI_OPENBSD</span> : <span class='ident'>OSABI</span> <span class='op'>=</span> <span class='ident'>OSABI</span>(<span class='number'>12</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>OSABI</span> {
@@ -762,21 +826,32 @@
             <span class='ident'>ELFOSABI_SYSV</span> <span class='op'>=&gt;</span> <span class='string'>&quot;UNIX System V&quot;</span>,
             <span class='ident'>ELFOSABI_HPUX</span> <span class='op'>=&gt;</span> <span class='string'>&quot;HP-UX&quot;</span>,
             <span class='ident'>ELFOSABI_NETBSD</span> <span class='op'>=&gt;</span> <span class='string'>&quot;NetBSD&quot;</span>,
+            <span class='ident'>ELFOSABI_LINUX</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Linux with GNU extensions&quot;</span>,
+            <span class='ident'>ELFOSABI_SOLARIS</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Solaris&quot;</span>,
+            <span class='ident'>ELFOSABI_AIX</span> <span class='op'>=&gt;</span> <span class='string'>&quot;AIX&quot;</span>,
+            <span class='ident'>ELFOSABI_IRIX</span> <span class='op'>=&gt;</span> <span class='string'>&quot;SGI Irix&quot;</span>,
+            <span class='ident'>ELFOSABI_FREEBSD</span> <span class='op'>=&gt;</span> <span class='string'>&quot;FreeBSD&quot;</span>,
+            <span class='ident'>ELFOSABI_TRU64</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Compaq TRU64 UNIX&quot;</span>,
+            <span class='ident'>ELFOSABI_MODESTO</span> <span class='op'>=&gt;</span> <span class='string'>&quot;Novell Modesto&quot;</span>,
+            <span class='ident'>ELFOSABI_OPENBSD</span> <span class='op'>=&gt;</span> <span class='string'>&quot;OpenBSD&quot;</span>,
             _ <span class='op'>=&gt;</span> <span class='string'>&quot;Unknown&quot;</span>,
         };
         <span class='macro'>write</span><span class='macro'>!</span>(<span class='ident'>f</span>, <span class='string'>&quot;{}&quot;</span>, <span class='ident'>str</span>)
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for Type</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents the ELF file type (object, executable, shared lib, core)</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Type</span>(<span class='kw'>pub</span> <span class='ident'>u16</span>);
+<span class='doccomment'>/// No file type</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ET_NONE</span> : <span class='ident'>Type</span> <span class='op'>=</span> <span class='ident'>Type</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Relocatable object file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ET_REL</span> : <span class='ident'>Type</span> <span class='op'>=</span> <span class='ident'>Type</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// Executable file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ET_EXEC</span> : <span class='ident'>Type</span> <span class='op'>=</span> <span class='ident'>Type</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Shared library</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ET_DYN</span> : <span class='ident'>Type</span> <span class='op'>=</span> <span class='ident'>Type</span>(<span class='number'>3</span>);
+<span class='doccomment'>/// Core file</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>ET_CORE</span> : <span class='ident'>Type</span> <span class='op'>=</span> <span class='ident'>Type</span>(<span class='number'>4</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>Type</span> {
@@ -799,9 +874,7 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for Machine</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents the ELF file machine architecture</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>Machine</span>(<span class='kw'>pub</span> <span class='ident'>u16</span>);
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>EM_NONE</span> : <span class='ident'>Machine</span> <span class='op'>=</span> <span class='ident'>Machine</span>(<span class='number'>0</span>);
@@ -976,18 +1049,29 @@
     }
 }
 
+<span class='doccomment'>/// Encapsulates the contents of the ELF File Header</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// ELF File Header</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// The ELF File Header starts off every ELF file and both identifies the</span>
+<span class='doccomment'>/// file contents and informs how to interpret said contents. This includes</span>
+<span class='doccomment'>/// the width of certain fields (32-bit vs 64-bit), the data endianness, the</span>
+<span class='doccomment'>/// file type, and more.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FileHeader</span> {
+    <span class='doccomment'>/// 32-bit vs 64-bit</span>
     <span class='kw'>pub</span> <span class='ident'>class</span>:      <span class='ident'>Class</span>,
+    <span class='doccomment'>/// little vs big endian</span>
     <span class='kw'>pub</span> <span class='ident'>data</span>:       <span class='ident'>Data</span>,
+    <span class='doccomment'>/// elf version</span>
     <span class='kw'>pub</span> <span class='ident'>version</span>:    <span class='ident'>Version</span>,
+    <span class='doccomment'>/// OS ABI</span>
     <span class='kw'>pub</span> <span class='ident'>osabi</span>:      <span class='ident'>OSABI</span>,
+    <span class='doccomment'>/// Version of the OS ABI</span>
     <span class='kw'>pub</span> <span class='ident'>abiversion</span>: <span class='ident'>u8</span>,
+    <span class='doccomment'>/// ELF file type</span>
     <span class='kw'>pub</span> <span class='ident'>elftype</span>:    <span class='ident'>Type</span>,
+    <span class='doccomment'>/// Target machine architecture</span>
     <span class='kw'>pub</span> <span class='ident'>machine</span>:    <span class='ident'>Machine</span>,
+    <span class='doccomment'>/// Virtual address of program entry point</span>
     <span class='kw'>pub</span> <span class='ident'>entry</span>:      <span class='ident'>u64</span>,
 }
 

@@ -44,41 +44,41 @@
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>elf</a>::<wbr><a class='mod' href=''>types</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4' href='../../src/elf/types.rs.html#2-594'>[src]</a></span></h1>
+        </span><a id='src-4' href='../../src/elf/types.rs.html#2-636'>[src]</a></span></h1>
 <h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Class.html'
                                title='elf::types::Class'>Class</a></td>
-                        <td class='docblock short'><p>Wrapper type for Class</p>
+                        <td class='docblock short'><p>Represents the ELF file class (32-bit vs 64-bit)</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Data.html'
                                title='elf::types::Data'>Data</a></td>
-                        <td class='docblock short'><p>Wrapper type for Data</p>
+                        <td class='docblock short'><p>Represents the ELF file data format (little-endian vs big-endian)</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.FileHeader.html'
                                title='elf::types::FileHeader'>FileHeader</a></td>
-                        <td class='docblock short'><p>ELF File Header</p>
+                        <td class='docblock short'><p>Encapsulates the contents of the ELF File Header</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Machine.html'
                                title='elf::types::Machine'>Machine</a></td>
-                        <td class='docblock short'><p>Wrapper type for Machine</p>
+                        <td class='docblock short'><p>Represents the ELF file machine architecture</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.OSABI.html'
                                title='elf::types::OSABI'>OSABI</a></td>
-                        <td class='docblock short'><p>Wrapper type for OSABI</p>
+                        <td class='docblock short'><p>Represents the ELF file OS ABI</p>
 </td>
                     </tr>
                 
@@ -127,16 +127,14 @@
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Type.html'
                                title='elf::types::Type'>Type</a></td>
-                        <td class='docblock short'><p>Wrapper type for Type</p>
+                        <td class='docblock short'><p>Represents the ELF file type (object, executable, shared lib, core)</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Version.html'
                                title='elf::types::Version'>Version</a></td>
-                        <td class='docblock short'><p>Wrapper type for Version
-This field represents the values both found in the e_ident byte array
-and the e_version field.</p>
+                        <td class='docblock short'><p>Represents the ELF file version</p>
 </td>
                     </tr>
                 </table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
@@ -144,152 +142,197 @@ and the e_version field.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_ABIVERSION.html'
                                title='elf::types::EI_ABIVERSION'>EI_ABIVERSION</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Location of ABI version field in ELF file header ident array</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_CLASS.html'
                                title='elf::types::EI_CLASS'>EI_CLASS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Location of ELF class field in ELF file header ident array</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_DATA.html'
                                title='elf::types::EI_DATA'>EI_DATA</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Location of data format field in ELF file header ident array</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_NIDENT.html'
                                title='elf::types::EI_NIDENT'>EI_NIDENT</a></td>
-                        <td class='docblock short'><p>Values and locations for parsing elf header ident byte array</p>
+                        <td class='docblock short'><p>Length of ELF file header platform-independent identification fields</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_OSABI.html'
                                title='elf::types::EI_OSABI'>EI_OSABI</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Location of OS ABI field in ELF file header ident array</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EI_VERSION.html'
                                title='elf::types::EI_VERSION'>EI_VERSION</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Location of ELF version field in ELF file header ident array</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFCLASS32.html'
                                title='elf::types::ELFCLASS32'>ELFCLASS32</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>32-bit ELF file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFCLASS64.html'
                                title='elf::types::ELFCLASS64'>ELFCLASS64</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>64-bit ELF file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFCLASSNONE.html'
                                title='elf::types::ELFCLASSNONE'>ELFCLASSNONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Invalid ELF file class</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFDATA2LSB.html'
                                title='elf::types::ELFDATA2LSB'>ELFDATA2LSB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>little-endian ELF file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFDATA2MSB.html'
                                title='elf::types::ELFDATA2MSB'>ELFDATA2MSB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>big-endian ELF file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFDATANONE.html'
                                title='elf::types::ELFDATANONE'>ELFDATANONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Invalid ELF data format</p>
+</td>
                     </tr>
                 
                     <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFMAGIC.html'
-                               title='elf::types::ELFMAGIC'>ELFMAGIC</a></td>
-                        <td class='docblock short'></td>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFMAG0.html'
+                               title='elf::types::ELFMAG0'>ELFMAG0</a></td>
+                        <td class='docblock short'><p>ELF magic number byte 1</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFMAG1.html'
+                               title='elf::types::ELFMAG1'>ELFMAG1</a></td>
+                        <td class='docblock short'><p>ELF magic number byte 2</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFMAG2.html'
+                               title='elf::types::ELFMAG2'>ELFMAG2</a></td>
+                        <td class='docblock short'><p>ELF magic number byte 3</p>
+</td>
+                    </tr>
+                
+                    <tr>
+                        <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFMAG3.html'
+                               title='elf::types::ELFMAG3'>ELFMAG3</a></td>
+                        <td class='docblock short'><p>ELF magic number byte 4</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_AIX.html'
                                title='elf::types::ELFOSABI_AIX'>ELFOSABI_AIX</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>AIX</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_FREEBSD.html'
                                title='elf::types::ELFOSABI_FREEBSD'>ELFOSABI_FREEBSD</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>FreeBSD</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_HPUX.html'
                                title='elf::types::ELFOSABI_HPUX'>ELFOSABI_HPUX</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>HP-UX</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_IRIX.html'
                                title='elf::types::ELFOSABI_IRIX'>ELFOSABI_IRIX</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>SGI Irix</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_LINUX.html'
                                title='elf::types::ELFOSABI_LINUX'>ELFOSABI_LINUX</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Linux with GNU extensions</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_MODESTO.html'
                                title='elf::types::ELFOSABI_MODESTO'>ELFOSABI_MODESTO</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Novell Modesto</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_NETBSD.html'
                                title='elf::types::ELFOSABI_NETBSD'>ELFOSABI_NETBSD</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>NetBSD</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_NONE.html'
                                title='elf::types::ELFOSABI_NONE'>ELFOSABI_NONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Defaults to Unix System V</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_OPENBSD.html'
                                title='elf::types::ELFOSABI_OPENBSD'>ELFOSABI_OPENBSD</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>OpenBSD</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_SOLARIS.html'
                                title='elf::types::ELFOSABI_SOLARIS'>ELFOSABI_SOLARIS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Solaris</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_SYSV.html'
                                title='elf::types::ELFOSABI_SYSV'>ELFOSABI_SYSV</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Unix System V</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ELFOSABI_TRU64.html'
                                title='elf::types::ELFOSABI_TRU64'>ELFOSABI_TRU64</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Compaq TRU64 UNIX</p>
+</td>
                     </tr>
                 
                     <tr>
@@ -763,43 +806,50 @@ and the e_version field.</p>
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ET_CORE.html'
                                title='elf::types::ET_CORE'>ET_CORE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Core file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ET_DYN.html'
                                title='elf::types::ET_DYN'>ET_DYN</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Shared library</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ET_EXEC.html'
                                title='elf::types::ET_EXEC'>ET_EXEC</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Executable file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ET_NONE.html'
                                title='elf::types::ET_NONE'>ET_NONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>No file type</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.ET_REL.html'
                                title='elf::types::ET_REL'>ET_REL</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Relocatable object file</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EV_CURRENT.html'
                                title='elf::types::EV_CURRENT'>EV_CURRENT</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Current version</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.EV_NONE.html'
                                title='elf::types::EV_NONE'>EV_NONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Invalid version</p>
+</td>
                     </tr>
                 
                     <tr>

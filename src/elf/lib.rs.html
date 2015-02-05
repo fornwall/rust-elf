@@ -365,8 +365,8 @@
         }
 
         <span class='comment'>// Verify the magic number</span>
-        <span class='kw'>if</span> <span class='ident'>ident</span>[<span class='number'>0</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAGIC</span>[<span class='number'>0</span>] <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>1</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAGIC</span>[<span class='number'>1</span>]
-                <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>2</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAGIC</span>[<span class='number'>2</span>] <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>3</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAGIC</span>[<span class='number'>3</span>] {
+        <span class='kw'>if</span> <span class='ident'>ident</span>[<span class='number'>0</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAG0</span> <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>1</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAG1</span>
+                <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>2</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAG2</span> <span class='op'>||</span> <span class='ident'>ident</span>[<span class='number'>3</span>] <span class='op'>!=</span> <span class='ident'>types</span>::<span class='ident'>ELFMAG3</span> {
             <span class='kw'>return</span> <span class='prelude-val'>Err</span>(<span class='ident'>ParseError</span>::<span class='ident'>InvalidMagic</span>);
         }
 
