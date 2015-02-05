@@ -44,7 +44,7 @@
 <h1 class='fqn'><span class='in-band'>Module <a href='../index.html'>elf</a>::<wbr><a class='mod' href=''>types</a><wbr></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]
             </a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-4' href='../../src/elf/types.rs.html#2-636'>[src]</a></span></h1>
+        </span><a id='src-4' href='../../src/elf/types.rs.html#2-696'>[src]</a></span></h1>
 <h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                     <tr>
@@ -85,21 +85,21 @@
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ProgFlag.html'
                                title='elf::types::ProgFlag'>ProgFlag</a></td>
-                        <td class='docblock short'><p>Wrapper type for ProgFlag</p>
+                        <td class='docblock short'><p>Represents ELF Program Header flags</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ProgType.html'
                                title='elf::types::ProgType'>ProgType</a></td>
-                        <td class='docblock short'><p>Wrapper type for ProgType</p>
+                        <td class='docblock short'><p>Represents ELF Program Header type</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ProgramHeader.html'
                                title='elf::types::ProgramHeader'>ProgramHeader</a></td>
-                        <td class='docblock short'><p>ELF Program Header</p>
+                        <td class='docblock short'><p>Encapsulates the contents of an ELF Program Header</p>
 </td>
                     </tr>
                 
@@ -113,14 +113,14 @@
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.SectionHeader.html'
                                title='elf::types::SectionHeader'>SectionHeader</a></td>
-                        <td class='docblock short'><p>ELF Section Header</p>
+                        <td class='docblock short'><p>Encapsulates the contents of an ELF Section Header</p>
 </td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.SectionType.html'
                                title='elf::types::SectionType'>SectionType</a></td>
-                        <td class='docblock short'><p>Wrapper type for SectionType</p>
+                        <td class='docblock short'><p>Represens ELF Section type</p>
 </td>
                     </tr>
                 
@@ -861,295 +861,344 @@
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PF_R.html'
                                title='elf::types::PF_R'>PF_R</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Readable program segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PF_W.html'
                                title='elf::types::PF_W'>PF_W</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Writable program segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PF_X.html'
                                title='elf::types::PF_X'>PF_X</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Executable program segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_DYNAMIC.html'
                                title='elf::types::PT_DYNAMIC'>PT_DYNAMIC</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Dynamic linking information</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_GNU_EH_FRAME.html'
                                title='elf::types::PT_GNU_EH_FRAME'>PT_GNU_EH_FRAME</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>GCC .eh_frame_hdr segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_GNU_RELRO.html'
                                title='elf::types::PT_GNU_RELRO'>PT_GNU_RELRO</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Read-only after relocation</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_GNU_STACK.html'
                                title='elf::types::PT_GNU_STACK'>PT_GNU_STACK</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Indicates stack executability</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_INTERP.html'
                                title='elf::types::PT_INTERP'>PT_INTERP</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Program interpreter</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_LOAD.html'
                                title='elf::types::PT_LOAD'>PT_LOAD</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Loadable program segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_NOTE.html'
                                title='elf::types::PT_NOTE'>PT_NOTE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Auxiliary information</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_NULL.html'
                                title='elf::types::PT_NULL'>PT_NULL</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Program header table entry unused</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_PHDR.html'
                                title='elf::types::PT_PHDR'>PT_PHDR</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>The program header table</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_SHLIB.html'
                                title='elf::types::PT_SHLIB'>PT_SHLIB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Unused</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.PT_TLS.html'
                                title='elf::types::PT_TLS'>PT_TLS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Thread-local storage segment</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_ALLOC.html'
                                title='elf::types::SHF_ALLOC'>SHF_ALLOC</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Occupies memory during execution</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_EXECINSTR.html'
                                title='elf::types::SHF_EXECINSTR'>SHF_EXECINSTR</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Executable</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_GROUP.html'
                                title='elf::types::SHF_GROUP'>SHF_GROUP</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section is member of a group</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_INFO_LINK.html'
                                title='elf::types::SHF_INFO_LINK'>SHF_INFO_LINK</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>`sh_info&#39; contains SHT index</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_LINK_ORDER.html'
                                title='elf::types::SHF_LINK_ORDER'>SHF_LINK_ORDER</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Preserve order after combining</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_MERGE.html'
                                title='elf::types::SHF_MERGE'>SHF_MERGE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Might be merged</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_NONE.html'
                                title='elf::types::SHF_NONE'>SHF_NONE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Empty flags</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_OS_NONCONFORMING.html'
                                title='elf::types::SHF_OS_NONCONFORMING'>SHF_OS_NONCONFORMING</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Non-standard OS specific handling required</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_STRINGS.html'
                                title='elf::types::SHF_STRINGS'>SHF_STRINGS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Contains nul-terminated strings</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_TLS.html'
                                title='elf::types::SHF_TLS'>SHF_TLS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section hold thread-local data</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHF_WRITE.html'
                                title='elf::types::SHF_WRITE'>SHF_WRITE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Writable</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_DYNAMIC.html'
                                title='elf::types::SHT_DYNAMIC'>SHT_DYNAMIC</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains information for dynamic linking</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_DYNSYM.html'
                                title='elf::types::SHT_DYNSYM'>SHT_DYNSYM</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains a minimal set of dynamic linking symbols</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_FINI_ARRAY.html'
                                title='elf::types::SHT_FINI_ARRAY'>SHT_FINI_ARRAY</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains an array of destructors</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_ATTRIBUTES.html'
                                title='elf::types::SHT_GNU_ATTRIBUTES'>SHT_GNU_ATTRIBUTES</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Object attributes</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_HASH.html'
                                title='elf::types::SHT_GNU_HASH'>SHT_GNU_HASH</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>GNU-style hash section</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_LIBLIST.html'
                                title='elf::types::SHT_GNU_LIBLIST'>SHT_GNU_LIBLIST</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Pre-link library list</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_VERDEF.html'
                                title='elf::types::SHT_GNU_VERDEF'>SHT_GNU_VERDEF</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Version definition section</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_VERNEED.html'
                                title='elf::types::SHT_GNU_VERNEED'>SHT_GNU_VERNEED</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Version needs section</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GNU_VERSYM.html'
                                title='elf::types::SHT_GNU_VERSYM'>SHT_GNU_VERSYM</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Version symbol table</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_GROUP.html'
                                title='elf::types::SHT_GROUP'>SHT_GROUP</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section group</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_HASH.html'
                                title='elf::types::SHT_HASH'>SHT_HASH</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains a symbol hash table. Must be present for dynamic linking</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_INIT_ARRAY.html'
                                title='elf::types::SHT_INIT_ARRAY'>SHT_INIT_ARRAY</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains an array of constructors</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_NOBITS.html'
                                title='elf::types::SHT_NOBITS'>SHT_NOBITS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data occupies no space in the file but otherwise resembles SHT_PROGBITS</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_NOTE.html'
                                title='elf::types::SHT_NOTE'>SHT_NOTE</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains information that marks the file in some way</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_NULL.html'
                                title='elf::types::SHT_NULL'>SHT_NULL</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Inactive section with undefined values</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_NUM.html'
                                title='elf::types::SHT_NUM'>SHT_NUM</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Number of reserved SHT_* values</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_PREINIT_ARRAY.html'
                                title='elf::types::SHT_PREINIT_ARRAY'>SHT_PREINIT_ARRAY</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains an array of pre-constructors</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_PROGBITS.html'
                                title='elf::types::SHT_PROGBITS'>SHT_PROGBITS</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Information defined by the program, includes executable code and data</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_REL.html'
                                title='elf::types::SHT_REL'>SHT_REL</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains relocation entries without explicit addends</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_RELA.html'
                                title='elf::types::SHT_RELA'>SHT_RELA</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains relocation entries with explicit addends</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_SHLIB.html'
                                title='elf::types::SHT_SHLIB'>SHT_SHLIB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section is reserved but has unspecified semantics</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_STRTAB.html'
                                title='elf::types::SHT_STRTAB'>SHT_STRTAB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains a string table</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_SYMTAB.html'
                                title='elf::types::SHT_SYMTAB'>SHT_SYMTAB</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Section data contains a symbol table</p>
+</td>
                     </tr>
                 
                     <tr>
                         <td><a class='stability Unmarked' title='No stability level'></a><a class='constant' href='constant.SHT_SYMTAB_SHNDX.html'
                                title='elf::types::SHT_SYMTAB_SHNDX'>SHT_SYMTAB_SHNDX</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'><p>Extended symbol table section index</p>
+</td>
                     </tr>
                 </table></section>
     <section id='search' class="content hidden"></section>

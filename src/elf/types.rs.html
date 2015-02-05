@@ -677,6 +677,66 @@
 <span id="635">635</span>
 <span id="636">636</span>
 <span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
 </pre><pre class='rust '>
 
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>fmt</span>;
@@ -1090,14 +1150,15 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for ProgFlag</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents ELF Program Header flags</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ProgFlag</span>(<span class='kw'>pub</span> <span class='ident'>u32</span>);
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PF_NONE</span> : <span class='ident'>ProgFlag</span> <span class='op'>=</span> <span class='ident'>ProgFlag</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Executable program segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PF_X</span> : <span class='ident'>ProgFlag</span> <span class='op'>=</span> <span class='ident'>ProgFlag</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// Writable program segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PF_W</span> : <span class='ident'>ProgFlag</span> <span class='op'>=</span> <span class='ident'>ProgFlag</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Readable program segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PF_R</span> : <span class='ident'>ProgFlag</span> <span class='op'>=</span> <span class='ident'>ProgFlag</span>(<span class='number'>4</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>ProgFlag</span> {
@@ -1126,21 +1187,30 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for ProgType</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represents ELF Program Header type</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ProgType</span>(<span class='kw'>pub</span> <span class='ident'>u32</span>);
+<span class='doccomment'>/// Program header table entry unused</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_NULL</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Loadable program segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_LOAD</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// Dynamic linking information</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_DYNAMIC</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Program interpreter</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_INTERP</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>3</span>);
+<span class='doccomment'>/// Auxiliary information</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_NOTE</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>4</span>);
+<span class='doccomment'>/// Unused</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_SHLIB</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>5</span>);
+<span class='doccomment'>/// The program header table</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_PHDR</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>6</span>);
+<span class='doccomment'>/// Thread-local storage segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_TLS</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>7</span>);
+<span class='doccomment'>/// GCC .eh_frame_hdr segment</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_GNU_EH_FRAME</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>0x6474e550</span>);
+<span class='doccomment'>/// Indicates stack executability</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_GNU_STACK</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>0x6474e551</span>);
+<span class='doccomment'>/// Read-only after relocation</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>PT_GNU_RELRO</span> : <span class='ident'>ProgType</span> <span class='op'>=</span> <span class='ident'>ProgType</span>(<span class='number'>0x6474e552</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>ProgType</span> {
@@ -1169,18 +1239,27 @@
     }
 }
 
+<span class='doccomment'>/// Encapsulates the contents of an ELF Program Header</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// ELF Program Header</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// The program header table is an array of program header structures describing</span>
+<span class='doccomment'>/// the various segments for program execution.</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ProgramHeader</span> {
+    <span class='doccomment'>/// Program segment type</span>
     <span class='kw'>pub</span> <span class='ident'>progtype</span>: <span class='ident'>ProgType</span>,
+    <span class='doccomment'>/// Offset into the ELF file where this segment begins</span>
     <span class='kw'>pub</span> <span class='ident'>offset</span>:   <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Virtual adress where this segment should be loaded</span>
     <span class='kw'>pub</span> <span class='ident'>vaddr</span>:    <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Physical address where this segment should be loaded</span>
     <span class='kw'>pub</span> <span class='ident'>paddr</span>:    <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Size of this segment in the file</span>
     <span class='kw'>pub</span> <span class='ident'>filesz</span>:   <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Size of this segment in memory</span>
     <span class='kw'>pub</span> <span class='ident'>memsz</span>:    <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Flags for this segment</span>
     <span class='kw'>pub</span> <span class='ident'>flags</span>:    <span class='ident'>ProgFlag</span>,
+    <span class='doccomment'>/// file and memory alignment</span>
     <span class='kw'>pub</span> <span class='ident'>align</span>:    <span class='ident'>u64</span>,
 }
 
@@ -1192,34 +1271,56 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Wrapper type for SectionType</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Represens ELF Section type</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SectionType</span>(<span class='kw'>pub</span> <span class='ident'>u32</span>);
+<span class='doccomment'>/// Inactive section with undefined values</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_NULL</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Information defined by the program, includes executable code and data</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_PROGBITS</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// Section data contains a symbol table</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_SYMTAB</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Section data contains a string table</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_STRTAB</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>3</span>);
+<span class='doccomment'>/// Section data contains relocation entries with explicit addends</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_RELA</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>4</span>);
+<span class='doccomment'>/// Section data contains a symbol hash table. Must be present for dynamic linking</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_HASH</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>5</span>);
+<span class='doccomment'>/// Section data contains information for dynamic linking</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_DYNAMIC</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>6</span>);
+<span class='doccomment'>/// Section data contains information that marks the file in some way</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_NOTE</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>7</span>);
+<span class='doccomment'>/// Section data occupies no space in the file but otherwise resembles SHT_PROGBITS</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_NOBITS</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>8</span>);
+<span class='doccomment'>/// Section data contains relocation entries without explicit addends</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_REL</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>9</span>);
+<span class='doccomment'>/// Section is reserved but has unspecified semantics</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_SHLIB</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>10</span>);
+<span class='doccomment'>/// Section data contains a minimal set of dynamic linking symbols</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_DYNSYM</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>11</span>);
+<span class='doccomment'>/// Section data contains an array of constructors</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_INIT_ARRAY</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>14</span>);
+<span class='doccomment'>/// Section data contains an array of destructors</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_FINI_ARRAY</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>15</span>);
+<span class='doccomment'>/// Section data contains an array of pre-constructors</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_PREINIT_ARRAY</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>16</span>);
+<span class='doccomment'>/// Section group</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GROUP</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>17</span>);
+<span class='doccomment'>/// Extended symbol table section index</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_SYMTAB_SHNDX</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>18</span>);
+<span class='doccomment'>/// Number of reserved SHT_* values</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_NUM</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>19</span>);
+<span class='doccomment'>/// Object attributes</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_ATTRIBUTES</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6ffffff5</span>);
+<span class='doccomment'>/// GNU-style hash section</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_HASH</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6ffffff6</span>);
+<span class='doccomment'>/// Pre-link library list</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_LIBLIST</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6ffffff7</span>);
+<span class='doccomment'>/// Version definition section</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_VERDEF</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6ffffffd</span>);
+<span class='doccomment'>/// Version needs section</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_VERNEED</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6ffffffe</span>);
+<span class='doccomment'>/// Version symbol table</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHT_GNU_VERSYM</span> : <span class='ident'>SectionType</span> <span class='op'>=</span> <span class='ident'>SectionType</span>(<span class='number'>0x6fffffff</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>SectionType</span> {
@@ -1266,16 +1367,27 @@
 <span class='doccomment'>///</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>, <span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SectionFlag</span>(<span class='kw'>pub</span> <span class='ident'>u64</span>);
+<span class='doccomment'>/// Empty flags</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_NONE</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>0</span>);
+<span class='doccomment'>/// Writable</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_WRITE</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>1</span>);
+<span class='doccomment'>/// Occupies memory during execution</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_ALLOC</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>2</span>);
+<span class='doccomment'>/// Executable</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_EXECINSTR</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>4</span>);
+<span class='doccomment'>/// Might be merged</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_MERGE</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>16</span>);
+<span class='doccomment'>/// Contains nul-terminated strings</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_STRINGS</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>32</span>);
+<span class='doccomment'>/// `sh_info&#39; contains SHT index</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_INFO_LINK</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>64</span>);
+<span class='doccomment'>/// Preserve order after combining</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_LINK_ORDER</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>128</span>);
+<span class='doccomment'>/// Non-standard OS specific handling required</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_OS_NONCONFORMING</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>256</span>);
+<span class='doccomment'>/// Section is member of a group</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_GROUP</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>512</span>);
+<span class='doccomment'>/// Section hold thread-local data</span>
 <span class='kw'>pub</span> <span class='kw'>const</span> <span class='ident'>SHF_TLS</span> : <span class='ident'>SectionFlag</span> <span class='op'>=</span> <span class='ident'>SectionFlag</span>(<span class='number'>1024</span>);
 
 <span class='kw'>impl</span> <span class='ident'>fmt</span>::<span class='ident'>Debug</span> <span class='kw'>for</span> <span class='ident'>SectionFlag</span> {
@@ -1290,20 +1402,28 @@
     }
 }
 
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// ELF Section Header</span>
-<span class='doccomment'>///</span>
+<span class='doccomment'>/// Encapsulates the contents of an ELF Section Header</span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>SectionHeader</span> {
+    <span class='doccomment'>/// Section Name</span>
     <span class='kw'>pub</span> <span class='ident'>name</span>:      <span class='ident'>String</span>,
+    <span class='doccomment'>/// Section Type</span>
     <span class='kw'>pub</span> <span class='ident'>shtype</span>:    <span class='ident'>SectionType</span>,
+    <span class='doccomment'>/// Section Flags</span>
     <span class='kw'>pub</span> <span class='ident'>flags</span>:     <span class='ident'>SectionFlag</span>,
+    <span class='doccomment'>/// in-memory address where this section is loaded</span>
     <span class='kw'>pub</span> <span class='ident'>addr</span>:      <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Byte-offset into the file where this section starts</span>
     <span class='kw'>pub</span> <span class='ident'>offset</span>:    <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Section size in bytes</span>
     <span class='kw'>pub</span> <span class='ident'>size</span>:      <span class='ident'>u64</span>,
+    <span class='doccomment'>/// Defined by section type</span>
     <span class='kw'>pub</span> <span class='ident'>link</span>:      <span class='ident'>u32</span>,
+    <span class='doccomment'>/// Defined by section type</span>
     <span class='kw'>pub</span> <span class='ident'>info</span>:      <span class='ident'>u32</span>,
+    <span class='doccomment'>/// address alignment</span>
     <span class='kw'>pub</span> <span class='ident'>addralign</span>: <span class='ident'>u64</span>,
+    <span class='doccomment'>/// size of an entry if section data is an array of entries</span>
     <span class='kw'>pub</span> <span class='ident'>entsize</span>:   <span class='ident'>u64</span>,
 }
 
