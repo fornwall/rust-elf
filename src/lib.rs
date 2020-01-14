@@ -1,4 +1,6 @@
-use crate::types::{ElfClass, ElfEndianness, ElfFileType, FileHeader, ELFOSABI_NONE, EM_NONE};
+use crate::types::{
+    ElfClass, ElfCpuArchitecture, ElfEndianness, ElfFileType, FileHeader, ELFOSABI_NONE,
+};
 use std::convert::TryFrom;
 use std::fs;
 use std::io;
@@ -106,7 +108,8 @@ impl File {
         elf_f.header.osabi = types::OSABI(ident[types::EI_OSABI]);
         elf_f.header.abiversion = ident[types::EI_ABIVERSION];
         elf_f.header.elftype = types::ElfFileType::try_from(read_u16!(elf_f, io_file)?).unwrap();
-        elf_f.header.machine = types::Machine(read_u16!(elf_f, io_file)?);
+        elf_f.header.cpu_architecture =
+            types::ElfCpuArchitecture::try_from(read_u16!(elf_f, io_file)?).unwrap();
 
         let elf_version = read_u32!(elf_f, io_file)?;
         if elf_version != 1 {
@@ -348,7 +351,7 @@ impl File {
                 class: ElfClass::Format32,
                 endianness: ElfEndianness::Lsb,
                 elftype: ElfFileType::None,
-                machine: EM_NONE,
+                cpu_architecture: ElfCpuArchitecture::EM_NONE,
                 osabi: ELFOSABI_NONE,
                 abiversion: 0,
                 entry: 0,
@@ -391,6 +394,7 @@ mod tests {
         assert_eq!(file.header.class, ElfClass::Format32);
         assert_eq!(file.header.endianness, ElfEndianness::Lsb);
         assert_eq!(file.header.elftype, ElfFileType::SharedLibrary);
+        //assert_eq!(file.header.machine, ElfCpu::);
         //let bss = file.get_section(".bss").expect("Get .bss section");
         //assert_eq!(".bss", bss.shdr.name);
         //assert!(bss.data.iter().all(|&b| b == 0));
