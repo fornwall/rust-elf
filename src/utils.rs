@@ -2,15 +2,9 @@
 macro_rules! read_u16 {
     ($elf:ident, $io:ident) => {{
         use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
-        match $elf.ehdr.data {
-            types::ELFDATA2LSB => $io.read_u16::<LittleEndian>(),
-            types::ELFDATA2MSB => $io.read_u16::<BigEndian>(),
-            types::ELFDATANONE => {
-                panic!("Unable to resolve file endianness");
-            }
-            _ => {
-                panic!("Unable to resolve file endianness");
-            }
+        match $elf.header.endianness {
+            types::ElfEndianness::Lsb => $io.read_u16::<LittleEndian>(),
+            types::ElfEndianness::Msb => $io.read_u16::<BigEndian>(),
         }
     }};
 }
@@ -19,15 +13,9 @@ macro_rules! read_u16 {
 macro_rules! read_u32 {
     ($elf:ident, $io:ident) => {{
         use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
-        match $elf.ehdr.data {
-            types::ELFDATA2LSB => $io.read_u32::<LittleEndian>(),
-            types::ELFDATA2MSB => $io.read_u32::<BigEndian>(),
-            types::ELFDATANONE => {
-                panic!("Unable to resolve file endianness");
-            }
-            _ => {
-                panic!("Unable to resolve file endianness");
-            }
+        match $elf.header.endianness {
+            types::ElfEndianness::Lsb => $io.read_u32::<LittleEndian>(),
+            types::ElfEndianness::Msb => $io.read_u32::<BigEndian>(),
         }
     }};
 }
@@ -36,15 +24,9 @@ macro_rules! read_u32 {
 macro_rules! read_u64 {
     ($elf:ident, $io:ident) => {{
         use byteorder::{BigEndian, LittleEndian, ReadBytesExt};
-        match $elf.ehdr.data {
-            types::ELFDATA2LSB => $io.read_u64::<LittleEndian>(),
-            types::ELFDATA2MSB => $io.read_u64::<BigEndian>(),
-            types::ELFDATANONE => {
-                panic!("Unable to resolve file endianness");
-            }
-            _ => {
-                panic!("Unable to resolve file endianness");
-            }
+        match $elf.header.endianness {
+            types::ElfEndianness::Lsb => $io.read_u64::<LittleEndian>(),
+            types::ElfEndianness::Msb => $io.read_u64::<BigEndian>(),
         }
     }};
 }

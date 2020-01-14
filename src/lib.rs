@@ -1,7 +1,12 @@
+use crate::types::{ElfClass, ElfEndianness, ElfFileType, FileHeader, ELFOSABI_NONE, EM_NONE};
+use std::convert::TryFrom;
 use std::fs;
 use std::io;
 use std::io::Read;
 use std::path::Path;
+
+#[macro_use]
+extern crate enum_display_derive;
 
 extern crate byteorder;
 
@@ -10,21 +15,23 @@ pub mod types;
 #[macro_use]
 pub mod utils;
 
+/// A file in the Executable and Linkable Format (ELF) format.
 pub struct File {
-    pub ehdr: types::FileHeader,
+    /// The ELF file header.
+    pub header: types::FileHeader,
     pub phdrs: Vec<types::ProgramHeader>,
     pub sections: Vec<Section>,
 }
 
 impl std::fmt::Debug for File {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:?} {:?} {:?}", self.ehdr, self.phdrs, self.sections)
+        write!(f, "{:?} {:?} {:?}", self.header, self.phdrs, self.sections)
     }
 }
 
 impl std::fmt::Display for File {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{{ {} }}", self.ehdr)?;
+        write!(f, "{{ {} }}", self.header)?;
         write!(f, "{{ ")?;
         for phdr in self.phdrs.iter() {
             write!(f, "{}", phdr)?;
@@ -41,7 +48,8 @@ impl std::fmt::Display for File {
 pub enum ParseError {
     IoError(io::Error),
     InvalidMagic,
-    InvalidFormat(Option<std::string::FromUtf8Error>),
+    //InvalidFormat(Option<std::string::FromUtf8Error>),
+    InvalidFormat(Option<String>),
     NotImplemented,
 }
 
@@ -53,7 +61,7 @@ impl std::convert::From<std::io::Error> for ParseError {
 
 impl std::convert::From<std::string::FromUtf8Error> for ParseError {
     fn from(e: std::string::FromUtf8Error) -> Self {
-        ParseError::InvalidFormat(Some(e))
+        ParseError::InvalidFormat(Some(e.to_string()))
     }
 }
 
@@ -86,31 +94,39 @@ impl File {
 
         // Fill in file header values from ident bytes
         let mut elf_f = File::new();
-        elf_f.ehdr.class = types::Class(ident[types::EI_CLASS]);
-        elf_f.ehdr.data = types::Data(ident[types::EI_DATA]);
-        elf_f.ehdr.osabi = types::OSABI(ident[types::EI_OSABI]);
-        elf_f.ehdr.abiversion = ident[types::EI_ABIVERSION];
-        elf_f.ehdr.elftype = types::Type(read_u16!(elf_f, io_file)?);
-        elf_f.ehdr.machine = types::Machine(read_u16!(elf_f, io_file)?);
-        elf_f.ehdr.version = types::Version(read_u32!(elf_f, io_file)?);
+        elf_f.header.class = match types::ElfClass::try_from(ident[types::EI_CLASS]) {
+            Ok(value) => value,
+            Err(_) => {
+                return Err(ParseError::InvalidFormat(Option::Some(
+                    "Invalid EI_CLASS".to_string(),
+                )))
+            }
+        };
+        elf_f.header.endianness = types::ElfEndianness::try_from(ident[types::EI_DATA]).unwrap();
+        elf_f.header.osabi = types::OSABI(ident[types::EI_OSABI]);
+        elf_f.header.abiversion = ident[types::EI_ABIVERSION];
+        elf_f.header.elftype = types::ElfFileType::try_from(read_u16!(elf_f, io_file)?).unwrap();
+        elf_f.header.machine = types::Machine(read_u16!(elf_f, io_file)?);
+
+        let elf_version = read_u32!(elf_f, io_file)?;
+        if elf_version != 1 {
+            panic!("Invalid version: {}", elf_version);
+        }
 
         let phoff: u64;
         let shoff: u64;
 
         // Parse the platform-dependent file fields
-        match elf_f.ehdr.class {
-            types::ELFCLASS32 => {
-                elf_f.ehdr.entry = read_u32!(elf_f, io_file)? as u64;
+        match elf_f.header.class {
+            types::ElfClass::Format32 => {
+                elf_f.header.entry = read_u32!(elf_f, io_file)? as u64;
                 phoff = read_u32!(elf_f, io_file)? as u64;
                 shoff = read_u32!(elf_f, io_file)? as u64;
             }
-            types::ELFCLASS64 => {
-                elf_f.ehdr.entry = read_u64!(elf_f, io_file)?;
+            types::ElfClass::Format64 => {
+                elf_f.header.entry = read_u64!(elf_f, io_file)?;
                 phoff = read_u64!(elf_f, io_file)?;
                 shoff = read_u64!(elf_f, io_file)?;
-            }
-            _ => {
-                panic!("Invalid class");
             }
         }
 
@@ -135,22 +151,25 @@ impl File {
             let align: u64;
 
             progtype = types::ProgType(read_u32!(elf_f, io_file)?);
-            if elf_f.ehdr.class == types::ELFCLASS32 {
-                offset = read_u32!(elf_f, io_file)? as u64;
-                vaddr = read_u32!(elf_f, io_file)? as u64;
-                paddr = read_u32!(elf_f, io_file)? as u64;
-                filesz = read_u32!(elf_f, io_file)? as u64;
-                memsz = read_u32!(elf_f, io_file)? as u64;
-                flags = types::ProgFlag(read_u32!(elf_f, io_file)?);
-                align = read_u32!(elf_f, io_file)? as u64;
-            } else {
-                flags = types::ProgFlag(read_u32!(elf_f, io_file)?);
-                offset = read_u64!(elf_f, io_file)?;
-                vaddr = read_u64!(elf_f, io_file)?;
-                paddr = read_u64!(elf_f, io_file)?;
-                filesz = read_u64!(elf_f, io_file)?;
-                memsz = read_u64!(elf_f, io_file)?;
-                align = read_u64!(elf_f, io_file)?;
+            match elf_f.header.class {
+                types::ElfClass::Format32 => {
+                    offset = read_u32!(elf_f, io_file)? as u64;
+                    vaddr = read_u32!(elf_f, io_file)? as u64;
+                    paddr = read_u32!(elf_f, io_file)? as u64;
+                    filesz = read_u32!(elf_f, io_file)? as u64;
+                    memsz = read_u32!(elf_f, io_file)? as u64;
+                    flags = types::ProgFlag(read_u32!(elf_f, io_file)?);
+                    align = read_u32!(elf_f, io_file)? as u64;
+                }
+                types::ElfClass::Format64 => {
+                    flags = types::ProgFlag(read_u32!(elf_f, io_file)?);
+                    offset = read_u64!(elf_f, io_file)?;
+                    vaddr = read_u64!(elf_f, io_file)?;
+                    paddr = read_u64!(elf_f, io_file)?;
+                    filesz = read_u64!(elf_f, io_file)?;
+                    memsz = read_u64!(elf_f, io_file)?;
+                    align = read_u64!(elf_f, io_file)?;
+                }
             }
 
             elf_f.phdrs.push(types::ProgramHeader {
@@ -181,25 +200,28 @@ impl File {
             let entsize: u64;
 
             name_idxs.push(read_u32!(elf_f, io_file)?);
-            shtype = types::SectionType(read_u32!(elf_f, io_file)?);
-            if elf_f.ehdr.class == types::ELFCLASS32 {
-                flags = types::SectionFlag(read_u32!(elf_f, io_file)? as u64);
-                addr = read_u32!(elf_f, io_file)? as u64;
-                offset = read_u32!(elf_f, io_file)? as u64;
-                size = read_u32!(elf_f, io_file)? as u64;
-                link = read_u32!(elf_f, io_file)?;
-                info = read_u32!(elf_f, io_file)?;
-                addralign = read_u32!(elf_f, io_file)? as u64;
-                entsize = read_u32!(elf_f, io_file)? as u64;
-            } else {
-                flags = types::SectionFlag(read_u64!(elf_f, io_file)?);
-                addr = read_u64!(elf_f, io_file)?;
-                offset = read_u64!(elf_f, io_file)?;
-                size = read_u64!(elf_f, io_file)?;
-                link = read_u32!(elf_f, io_file)?;
-                info = read_u32!(elf_f, io_file)?;
-                addralign = read_u64!(elf_f, io_file)?;
-                entsize = read_u64!(elf_f, io_file)?;
+            shtype = types::SectionType::try_from(read_u32!(elf_f, io_file)?).unwrap();
+            match elf_f.header.class {
+                types::ElfClass::Format32 => {
+                    flags = types::SectionFlag(read_u32!(elf_f, io_file)? as u64);
+                    addr = read_u32!(elf_f, io_file)? as u64;
+                    offset = read_u32!(elf_f, io_file)? as u64;
+                    size = read_u32!(elf_f, io_file)? as u64;
+                    link = read_u32!(elf_f, io_file)?;
+                    info = read_u32!(elf_f, io_file)?;
+                    addralign = read_u32!(elf_f, io_file)? as u64;
+                    entsize = read_u32!(elf_f, io_file)? as u64;
+                }
+                types::ElfClass::Format64 => {
+                    flags = types::SectionFlag(read_u64!(elf_f, io_file)?);
+                    addr = read_u64!(elf_f, io_file)?;
+                    offset = read_u64!(elf_f, io_file)?;
+                    size = read_u64!(elf_f, io_file)?;
+                    link = read_u32!(elf_f, io_file)?;
+                    info = read_u32!(elf_f, io_file)?;
+                    addralign = read_u64!(elf_f, io_file)?;
+                    entsize = read_u64!(elf_f, io_file)?;
+                }
             }
 
             elf_f.sections.push(Section {
@@ -230,7 +252,7 @@ impl File {
             let size = elf_f.sections[s_i].shdr.size;
             io_file.seek(io::SeekFrom::Start(off))?;
             let mut data = vec![0; size as usize];
-            if elf_f.sections[s_i].shdr.shtype != types::SHT_NOBITS {
+            if elf_f.sections[s_i].shdr.shtype != types::SectionType::Nobits {
                 io_file.read_exact(&mut data)?;
             }
             elf_f.sections[s_i].data = data;
@@ -258,7 +280,9 @@ impl File {
 
     pub fn get_symbols(&self, section: &Section) -> Result<Vec<types::Symbol>, ParseError> {
         let mut symbols = Vec::new();
-        if section.shdr.shtype == types::SHT_SYMTAB || section.shdr.shtype == types::SHT_DYNSYM {
+        if section.shdr.shtype == types::SectionType::Symtab
+            || section.shdr.shtype == types::SectionType::Dynsym
+        {
             let link = &self.sections[section.shdr.link as usize].data;
             let mut io_section = io::Cursor::new(&section.data);
             while (io_section.position() as usize) < section.data.len() {
@@ -281,20 +305,23 @@ impl File {
         let mut info = [0u8];
         let mut other = [0u8];
 
-        if self.ehdr.class == types::ELFCLASS32 {
-            name = read_u32!(self, io_section)?;
-            value = read_u32!(self, io_section)? as u64;
-            size = read_u32!(self, io_section)? as u64;
-            io_section.read_exact(&mut info)?;
-            io_section.read_exact(&mut other)?;
-            shndx = read_u16!(self, io_section)?;
-        } else {
-            name = read_u32!(self, io_section)?;
-            io_section.read_exact(&mut info)?;
-            io_section.read_exact(&mut other)?;
-            shndx = read_u16!(self, io_section)?;
-            value = read_u64!(self, io_section)?;
-            size = read_u64!(self, io_section)?;
+        match self.header.class {
+            types::ElfClass::Format32 => {
+                name = read_u32!(self, io_section)?;
+                value = read_u32!(self, io_section)? as u64;
+                size = read_u32!(self, io_section)? as u64;
+                io_section.read_exact(&mut info)?;
+                io_section.read_exact(&mut other)?;
+                shndx = read_u16!(self, io_section)?;
+            }
+            types::ElfClass::Format64 => {
+                name = read_u32!(self, io_section)?;
+                io_section.read_exact(&mut info)?;
+                io_section.read_exact(&mut other)?;
+                shndx = read_u16!(self, io_section)?;
+                value = read_u64!(self, io_section)?;
+                size = read_u64!(self, io_section)?;
+            }
         }
 
         symbols.push(types::Symbol {
@@ -317,7 +344,15 @@ impl File {
 
     pub fn new() -> File {
         File {
-            ehdr: types::FileHeader::default(),
+            header: FileHeader {
+                class: ElfClass::Format32,
+                endianness: ElfEndianness::Lsb,
+                elftype: ElfFileType::None,
+                machine: EM_NONE,
+                osabi: ELFOSABI_NONE,
+                abiversion: 0,
+                entry: 0,
+            },
             phdrs: Vec::new(),
             sections: Vec::new(),
         }
@@ -338,6 +373,7 @@ impl std::fmt::Display for Section {
 
 #[cfg(test)]
 mod tests {
+    use crate::types::{ElfClass, ElfEndianness, ElfFileType};
     use crate::File;
     use std::path::PathBuf;
 
@@ -347,5 +383,16 @@ mod tests {
         let bss = file.get_section(".bss").expect("Get .bss section");
         assert_eq!(".bss", bss.shdr.name);
         assert!(bss.data.iter().all(|&b| b == 0));
+    }
+
+    #[test]
+    fn test_android_arm_libncurses() {
+        let file = File::open_path(PathBuf::from("tests/samples/android_arm_libncurses")).unwrap();
+        assert_eq!(file.header.class, ElfClass::Format32);
+        assert_eq!(file.header.endianness, ElfEndianness::Lsb);
+        assert_eq!(file.header.elftype, ElfFileType::SharedLibrary);
+        //let bss = file.get_section(".bss").expect("Get .bss section");
+        //assert_eq!(".bss", bss.shdr.name);
+        //assert!(bss.data.iter().all(|&b| b == 0));
     }
 }

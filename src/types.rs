@@ -1,4 +1,6 @@
+use num_enum::TryFromPrimitive;
 use std::fmt;
+use std::fmt::Display;
 
 /// Length of ELF file header platform-independent identification fields
 pub const EI_NIDENT: usize = 16;
@@ -21,87 +23,28 @@ pub const EI_OSABI: usize = 7;
 /// Location of ABI version field in ELF file header ident array
 pub const EI_ABIVERSION: usize = 8;
 
-/// Represents the ELF file class (32-bit vs 64-bit)
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub struct Class(pub u8);
-/// Invalid ELF file class
-pub const ELFCLASSNONE: Class = Class(0);
-/// 32-bit ELF file
-pub const ELFCLASS32: Class = Class(1);
-/// 64-bit ELF file
-pub const ELFCLASS64: Class = Class(2);
-
-impl fmt::Debug for Class {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:#x}", self.0)
-    }
-}
-
-impl fmt::Display for Class {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let str = match *self {
-            ELFCLASSNONE => "Invalid",
-            ELFCLASS32 => "32-bit",
-            ELFCLASS64 => "64-bit",
-            _ => "Unknown",
-        };
-        write!(f, "{}", str)
-    }
-}
-
-/// Represents the ELF file data format (little-endian vs big-endian)
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub struct Data(pub u8);
-/// Invalid ELF data format
-pub const ELFDATANONE: Data = Data(0);
-/// little-endian ELF file
-pub const ELFDATA2LSB: Data = Data(1);
-/// big-endian ELF file
-pub const ELFDATA2MSB: Data = Data(2);
-
-impl fmt::Debug for Data {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:#x}", self.0)
-    }
-}
-
-impl fmt::Display for Data {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let str = match *self {
-            ELFDATANONE => "Invalid",
-            ELFDATA2LSB => "2's complement, little endian",
-            ELFDATA2MSB => "2's complement, big endian",
-            _ => "Unknown",
-        };
-        write!(f, "{}", str)
-    }
-}
-
-/// Represents the ELF file version
+/// Represents the ELF file class (32-bit vs 64-bit).
 ///
-/// This field represents the values both found in the e_ident byte array and the e_version field.
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub struct Version(pub u32);
-/// Invalid version
-pub const EV_NONE: Version = Version(0);
-/// Current version
-pub const EV_CURRENT: Version = Version(1);
-
-impl fmt::Debug for Version {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:#x}", self.0)
-    }
+/// Represented as the fourth byte in an ELF file and named EI_CLASS in C code.
+#[derive(Copy, Clone, Debug, PartialEq, Eq, TryFromPrimitive)]
+#[repr(u8)]
+pub enum ElfClass {
+    /// Format for 32-bit ELF files. Named ELFCLASS32 in C code.
+    Format32 = 1,
+    /// Format for 64-bit ELF files. Named ELFCLASS64 in C code.
+    Format64 = 2,
 }
 
-impl fmt::Display for Version {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let str = match *self {
-            EV_NONE => "Invalid",
-            EV_CURRENT => "1 (Current)",
-            _ => "Unknown",
-        };
-        write!(f, "{}", str)
-    }
+/// The endianness encoding of an ELF file (LSB or MSB).
+///
+/// Represented as the fifth byte in an ELF file and named EI_DATA in C code.
+#[derive(Copy, Clone, Debug, Display, PartialEq, Eq, TryFromPrimitive)]
+#[repr(u8)]
+pub enum ElfEndianness {
+    /// Least significant byte first endianness. Named ELFDATA2LSB in C code.
+    Lsb = 1,
+    /// Most significant byte first endianness. Named ELFDATA2MSB in C code.
+    Msb = 2,
 }
 
 /// Represents the ELF file OS ABI
@@ -159,37 +102,19 @@ impl fmt::Display for OSABI {
 }
 
 /// Represents the ELF file type (object, executable, shared lib, core)
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub struct Type(pub u16);
-/// No file type
-pub const ET_NONE: Type = Type(0);
-/// Relocatable object file
-pub const ET_REL: Type = Type(1);
-/// Executable file
-pub const ET_EXEC: Type = Type(2);
-/// Shared library
-pub const ET_DYN: Type = Type(3);
-/// Core file
-pub const ET_CORE: Type = Type(4);
-
-impl fmt::Debug for Type {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:#x}", self.0)
-    }
-}
-
-impl fmt::Display for Type {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let str = match *self {
-            ET_NONE => "No file type",
-            ET_REL => "Relocatable file",
-            ET_EXEC => "Executable file",
-            ET_DYN => "Shared object file",
-            ET_CORE => "Core file",
-            _ => "Unknown",
-        };
-        write!(f, "{}", str)
-    }
+#[derive(Copy, Clone, Debug, Display, PartialEq, Eq, TryFromPrimitive)]
+#[repr(u16)]
+pub enum ElfFileType {
+    /// No file type. Named ET_NONE in C code.
+    None = 0,
+    /// Relocatable object file. Named ET_REL in C code.
+    RelocatableObject = 1,
+    /// Executable file. Named ET_EXEC in C code.
+    Executable = 2,
+    /// Shared library. Named ET_DYN in C code.
+    SharedLibrary = 3,
+    /// Core file. Named ET_CORE in C code.
+    Core = 4,
 }
 
 /// Represents the ELF file machine architecture
@@ -376,44 +301,27 @@ impl fmt::Display for Machine {
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct FileHeader {
     /// 32-bit vs 64-bit
-    pub class: Class,
+    pub class: ElfClass,
     /// little vs big endian
-    pub data: Data,
-    /// elf version
-    pub version: Version,
+    pub endianness: ElfEndianness,
     /// OS ABI
     pub osabi: OSABI,
     /// Version of the OS ABI
     pub abiversion: u8,
     /// ELF file type
-    pub elftype: Type,
+    pub elftype: ElfFileType,
     /// Target machine architecture
     pub machine: Machine,
     /// Virtual address of program entry point
     pub entry: u64,
 }
 
-impl Default for FileHeader {
-    fn default() -> FileHeader {
-        FileHeader {
-            class: ELFCLASSNONE,
-            data: ELFDATANONE,
-            version: EV_NONE,
-            elftype: ET_NONE,
-            machine: EM_NONE,
-            osabi: ELFOSABI_NONE,
-            abiversion: 0,
-            entry: 0,
-        }
-    }
-}
-
 impl fmt::Display for FileHeader {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "File Header for {} {} Elf {} for {} {}",
-            self.class, self.data, self.elftype, self.osabi, self.machine
+            "File Header for {:?} {} Elf {} for {} {}",
+            self.class, self.endianness, self.elftype, self.osabi, self.machine
         )
     }
 }
@@ -539,95 +447,64 @@ impl fmt::Display for ProgramHeader {
     }
 }
 
-/// Represens ELF Section type
-#[derive(Copy, Clone, PartialEq, Eq)]
-pub struct SectionType(pub u32);
-/// Inactive section with undefined values
-pub const SHT_NULL: SectionType = SectionType(0);
-/// Information defined by the program, includes executable code and data
-pub const SHT_PROGBITS: SectionType = SectionType(1);
-/// Section data contains a symbol table
-pub const SHT_SYMTAB: SectionType = SectionType(2);
-/// Section data contains a string table
-pub const SHT_STRTAB: SectionType = SectionType(3);
-/// Section data contains relocation entries with explicit addends
-pub const SHT_RELA: SectionType = SectionType(4);
-/// Section data contains a symbol hash table. Must be present for dynamic linking
-pub const SHT_HASH: SectionType = SectionType(5);
-/// Section data contains information for dynamic linking
-pub const SHT_DYNAMIC: SectionType = SectionType(6);
-/// Section data contains information that marks the file in some way
-pub const SHT_NOTE: SectionType = SectionType(7);
-/// Section data occupies no space in the file but otherwise resembles SHT_PROGBITS
-pub const SHT_NOBITS: SectionType = SectionType(8);
-/// Section data contains relocation entries without explicit addends
-pub const SHT_REL: SectionType = SectionType(9);
-/// Section is reserved but has unspecified semantics
-pub const SHT_SHLIB: SectionType = SectionType(10);
-/// Section data contains a minimal set of dynamic linking symbols
-pub const SHT_DYNSYM: SectionType = SectionType(11);
-/// Section data contains an array of constructors
-pub const SHT_INIT_ARRAY: SectionType = SectionType(14);
-/// Section data contains an array of destructors
-pub const SHT_FINI_ARRAY: SectionType = SectionType(15);
-/// Section data contains an array of pre-constructors
-pub const SHT_PREINIT_ARRAY: SectionType = SectionType(16);
-/// Section group
-pub const SHT_GROUP: SectionType = SectionType(17);
-/// Extended symbol table section index
-pub const SHT_SYMTAB_SHNDX: SectionType = SectionType(18);
-/// Number of reserved SHT_* values
-pub const SHT_NUM: SectionType = SectionType(19);
-/// Object attributes
-pub const SHT_GNU_ATTRIBUTES: SectionType = SectionType(0x6fff_fff5);
-/// GNU-style hash section
-pub const SHT_GNU_HASH: SectionType = SectionType(0x6fff_fff6);
-/// Pre-link library list
-pub const SHT_GNU_LIBLIST: SectionType = SectionType(0x6fff_fff7);
-/// Version definition section
-pub const SHT_GNU_VERDEF: SectionType = SectionType(0x6fff_fffd);
-/// Version needs section
-pub const SHT_GNU_VERNEED: SectionType = SectionType(0x6fff_fffe);
-/// Version symbol table
-pub const SHT_GNU_VERSYM: SectionType = SectionType(0x6fff_ffff);
-
-impl fmt::Debug for SectionType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:#x}", self.0)
-    }
-}
-
-impl fmt::Display for SectionType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let str = match *self {
-            SHT_NULL => "SHT_NULL",
-            SHT_PROGBITS => "SHT_PROGBITS",
-            SHT_SYMTAB => "SHT_SYMTAB",
-            SHT_STRTAB => "SHT_STRTAB",
-            SHT_RELA => "SHT_RELA",
-            SHT_HASH => "SHT_HASH",
-            SHT_DYNAMIC => "SHT_DYNAMIC",
-            SHT_NOTE => "SHT_NOTE",
-            SHT_NOBITS => "SHT_NOBITS",
-            SHT_REL => "SHT_REL",
-            SHT_SHLIB => "SHT_SHLIB",
-            SHT_DYNSYM => "SHT_DYNSYM",
-            SHT_INIT_ARRAY => "SHT_INIT_ARRAY",
-            SHT_FINI_ARRAY => "SHT_FINI_ARRAY",
-            SHT_PREINIT_ARRAY => "SHT_PREINIT_ARRAY",
-            SHT_GROUP => "SHT_GROUP",
-            SHT_SYMTAB_SHNDX => "SHT_SYMTAB_SHNDX",
-            SHT_NUM => "SHT_NUM",
-            SHT_GNU_ATTRIBUTES => "SHT_GNU_ATTRIBUTES",
-            SHT_GNU_HASH => "SHT_GNU_HASH",
-            SHT_GNU_LIBLIST => "SHT_GNU_LIBLIST",
-            SHT_GNU_VERDEF => "SHT_GNU_VERDEF",
-            SHT_GNU_VERNEED => "SHT_GNU_VERNEED",
-            SHT_GNU_VERSYM => "SHT_GNU_VERSYM",
-            _ => "Unknown",
-        };
-        write!(f, "{}", str)
-    }
+/// An ELF section type.
+///
+/// This is a field on [SectionHeader::shtype].
+#[derive(Copy, Clone, Debug, Display, PartialEq, Eq, TryFromPrimitive)]
+#[repr(u32)]
+pub enum SectionType {
+    /// Inactive section with undefined values. Named SHT_NULL in C code.
+    Null = 0,
+    /// Information defined by the program, includes executable code and data. Named SHT_PROGBITS in C code.
+    Progbits = 1,
+    /// Section data contains a symbol table. Named SHT_SYMTAB in C code.
+    Symtab = 2,
+    /// Section data contains a string table. Named SHT_SYMTAB in C code.
+    Strtab = 3,
+    /// Section data contains relocation entries with explicit addends. Named SHT_RELA in C code.
+    Rela = 4,
+    /// Section data contains a symbol hash table. Must be present for dynamic linking. Named SHT_HASH in C code.
+    Hash = 5,
+    /// Section data contains information for dynamic linking. Named SHT_DYNAMIC in C code.
+    Dynamic = 6,
+    /// Section data contains information that marks the file in some way. Named SHT_NOTE in C code.
+    Note = 7,
+    /// Section data occupies no space in the file but otherwise resembles SHT_PROGBITS. Named SHT_NOBITS in C code.
+    Nobits = 8,
+    /// Section data contains relocation entries without explicit addends. Named SHT_REL in C code.
+    Rel = 9,
+    /// Section is reserved but has unspecified semantics. Named SHT_SHLIB in C code.
+    Shlib = 10,
+    /// Section data contains a minimal set of dynamic linking symbols. Named SHT_DYNSYM in C code.
+    Dynsym = 11,
+    /// Section data contains an array of constructors. Named SHT_INIT_ARRAY in C code.
+    InitArray = 12,
+    /// Section data contains an array of destructors. Named SHT_FINI_ARRAY in C code.
+    FiniArray = 13,
+    /// Section data contains an array of pre-constructors. Named SHT_PREINIT_ARRAY in C code.
+    PreinitArray = 14,
+    /// Section group. Named SHT_GROUP in C code.
+    Group = 15,
+    /// Extended symbol table section index. Named SHT_SYMTAB_SHNDX in C code.
+    SymtabShndx = 16,
+    /// Number of reserved SHT_* values. Named SHT_NUM in C code.
+    Num = 17,
+    /// Object attributes. Named SHT_GNU_ATTRIBUTES in C code.
+    GnuAttributes = 0x6fff_fff5,
+    /// GNU-style hash section. Named SHT_GNU_HASH in C code.
+    GnuHash = 0x6fff_fff6,
+    /// Pre-link library list. Named SHT_GNU_LIBLIST in C code.
+    GnuLiblist = 0x6fff_fff7,
+    /// Version definition section. Named SHT_GNU_VERDEF in C code.
+    GnuVerdef = 0x6fff_fffd,
+    /// Version needs section. Named SHT_GNU_VERNEED in C code.
+    GnuVerneed = 0x6fff_fffe,
+    /// Version symbol table. Named SHT_GNU_VERSYM in C code.
+    GnuVersym = 0x6fff_ffff,
+    /// Arm specific. Named SHT_ARM_EXIDX in C code.
+    ArmExidc = 0x7000_0001,
+    /// Arm specific. Named SHT_ARM_ATTRIBUTES in C code.
+    ArmAttributes = 0x7000_0003,
 }
 
 ///

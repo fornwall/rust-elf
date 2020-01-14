@@ -16,3 +16,5 @@ name = "elf"
 
 [dependencies]
 byteorder = "0.*"
+num_enum = "0.4"
+enum-display-derive = "0.1"
